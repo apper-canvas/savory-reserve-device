@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { ApperIcon } from '@/components/ApperIcon';
-import menuService from '@/services/menuService';
+import React, { useState, useEffect } from 'react'
+import ApperIcon from '@/components/ApperIcon'
+import menuService from '@/services/menuService'
 import MenuCategory from '@/components/organisms/MenuCategory';
 import PhotoLightbox from '@/components/molecules/PhotoLightbox';
 import Loading from '@/components/ui/Loading';
