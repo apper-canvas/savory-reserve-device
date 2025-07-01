@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { ApperIcon } from '@/components/ApperIcon';
+import React, { useState, useEffect } from 'react'
+import ApperIcon from '@/components/ApperIcon'
 
-const PhotoLightbox = ({ images, initialIndex = 0, isOpen, onClose }) => {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+function PhotoLightbox({ images, initialIndex = 0, isOpen, onClose }) {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex)
 
   useEffect(() => {
     setCurrentIndex(initialIndex);
