@@ -1,7 +1,7 @@
 import React from 'react';
 import DishCard from '@/components/molecules/DishCard';
 
-const MenuCategory = ({ category, onDishImageClick }) => {
+const MenuCategory = ({ category, onDishImageClick, onAddToOrder }) => {
   return (
     <div className="mb-12">
       {/* Category Header */}
@@ -12,12 +12,13 @@ const MenuCategory = ({ category, onDishImageClick }) => {
             alt={category.name}
             className="w-full max-w-md h-32 object-cover rounded-lg shadow-lg mx-auto"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center">
-            <div className="text-center text-white">
-              <h2 className="text-3xl font-bold mb-2">{category.name}</h2>
-              <p className="text-sm opacity-90">{category.description}</p>
-            </div>
-          </div>
+<DishCard
+              key={dish.Id}
+              dish={dish}
+              onImageClick={onDishImageClick}
+              onAddToOrder={onAddToOrder}
+            />
+          ))}
         </div>
       </div>
 

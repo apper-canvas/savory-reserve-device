@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItemAsync } from "@/store/cartSlice";
 import ApperIcon from "@/components/ApperIcon";
 import MenuCategory from "@/components/organisms/MenuCategory";
 import PhotoLightbox from "@/components/molecules/PhotoLightbox";
 import Error from "@/components/ui/Error";
 import Loading from "@/components/ui/Loading";
 import menuService from "@/services/menuService";
-
 const Menu = () => {
+  const dispatch = useDispatch();
+  const { totalItems, loading: cartLoading } = useSelector((state) => state.cart);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +17,6 @@ const Menu = () => {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-
   useEffect(() => {
     loadCategories();
   }, []);
@@ -58,15 +60,19 @@ const Menu = () => {
     }
   };
 
-  const closeLightbox = () => {
+const closeLightbox = () => {
     setIsLightboxOpen(false);
     setLightboxImages([]);
     setLightboxIndex(0);
   };
 
+  const handleAddToOrder = async (dish) => {
+    await dispatch(addItemAsync(dish));
+  };
+
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    category.dishes.some(dish => 
+    category.dishes.some(dish =>
       dish.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       dish.description.toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -112,10 +118,15 @@ const Menu = () => {
                             onChange={e => setSearchTerm(e.target.value)}
                             className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64" />
                     </div>
-                    {/* Cart Icon */}
+{/* Cart Icon */}
                     <div className="relative">
                         <button className="p-2 text-gray-600 hover:text-gray-900 relative">
                             <ApperIcon name="ShoppingCart" size={24} />
+                            {totalItems > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                    {totalItems}
+                                </span>
+                            )}
                         </button>
                     </div>
                 </div>
@@ -137,10 +148,11 @@ const Menu = () => {
             <ApperIcon name="Search" size={48} className="mx-auto text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No dishes found</h3>
             <p className="text-gray-600">Try adjusting your search terms</p>
-        </div> : filteredCategories.map(category => <MenuCategory
+</div> : filteredCategories.map(category => <MenuCategory
             key={category.Id}
             category={category}
-            onDishImageClick={handleDishImageClick} />)}
+            onDishImageClick={handleDishImageClick}
+            onAddToOrder={handleAddToOrder} />)}
     </main>
     {/* Photo Lightbox */}
     <PhotoLightbox

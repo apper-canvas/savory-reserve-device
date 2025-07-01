@@ -1,4 +1,50 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import orderService from '@/services/orderService';
+import { toast } from 'react-toastify';
+
+// Async thunk for adding item to cart
+export const addItemAsync = createAsyncThunk(
+  'cart/addItemAsync',
+  async (dish, { rejectWithValue }) => {
+    try {
+      const result = await orderService.addToCart(dish);
+      toast.success(`${dish.name} added to cart!`);
+      return result;
+    } catch (error) {
+      toast.error('Failed to add item to cart');
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk for updating quantity
+export const updateQuantityAsync = createAsyncThunk(
+  'cart/updateQuantityAsync',
+  async ({ dishId, quantity }, { rejectWithValue }) => {
+    try {
+      const result = await orderService.updateQuantity(dishId, quantity);
+      return result;
+    } catch (error) {
+      toast.error('Failed to update quantity');
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk for removing item
+export const removeItemAsync = createAsyncThunk(
+  'cart/removeItemAsync',
+  async (dishId, { rejectWithValue }) => {
+    try {
+      const result = await orderService.removeFromCart(dishId);
+      toast.success('Item removed from cart');
+      return result;
+    } catch (error) {
+      toast.error('Failed to remove item');
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -7,6 +53,7 @@ const cartSlice = createSlice({
     totalItems: 0,
     totalPrice: 0,
     loading: false,
+    error: null,
   },
   reducers: {
     setLoading: (state, action) => {
@@ -53,7 +100,55 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalItems = 0;
       state.totalPrice = 0;
-    },
+},
+  },
+  extraReducers: (builder) => {
+    builder
+      // Add item async cases
+      .addCase(addItemAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addItemAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload.items;
+        state.totalItems = action.payload.totalItems;
+        state.totalPrice = action.payload.totalPrice;
+      })
+      .addCase(addItemAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Update quantity async cases
+      .addCase(updateQuantityAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateQuantityAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload.items;
+        state.totalItems = action.payload.totalItems;
+        state.totalPrice = action.payload.totalPrice;
+      })
+      .addCase(updateQuantityAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Remove item async cases
+      .addCase(removeItemAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeItemAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload.items;
+        state.totalItems = action.payload.totalItems;
+        state.totalPrice = action.payload.totalPrice;
+      })
+      .addCase(removeItemAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

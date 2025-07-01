@@ -1,14 +1,14 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import ApperIcon from "@/components/ApperIcon";
-const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
-  const [isAdding, setIsAdding] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const handleAddToOrder = async () => {
+const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
+  const { loading: cartLoading } = useSelector((state) => state.cart);
+  const [isAdding, setIsAdding] = useState(false);
+const handleAddToOrder = async () => {
     if (!onAddToOrder || !dish) return;
     
     setIsAdding(true);
-    setLoading(true);
     
     try {
       await onAddToOrder(dish);
@@ -16,7 +16,6 @@ const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
       console.error('Failed to add item to order:', error);
     } finally {
       setIsAdding(false);
-      setLoading(false);
     }
   };
 
@@ -96,10 +95,10 @@ const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
           
 <button 
             onClick={handleAddToOrder}
-            disabled={isAdding || loading}
+            disabled={isAdding || cartLoading}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center"
           >
-            {isAdding ? (
+{isAdding || cartLoading ? (
               <>
                 <ApperIcon name="Loader2" size={16} className="mr-1 animate-spin" />
                 Adding...
