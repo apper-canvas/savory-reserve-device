@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ApperIcon from "@/components/ApperIcon";
 const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
-const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [loading, setLoading] = useState(false);
 

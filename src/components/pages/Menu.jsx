@@ -90,83 +90,65 @@ const Menu = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-40">
-<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Savory Reserve
-              </h1>
+    {/* Header */}
+    <header className="bg-white shadow-sm sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+                <div className="flex items-center">
+                    <h1 className="text-2xl font-bold text-gray-900">Savory Reserve
+                                      </h1>
+                </div>
+                {/* Search and Cart */}
+                <div className="flex items-center space-x-4">
+                    <div className="relative">
+                        <ApperIcon
+                            name="Search"
+                            size={20}
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="Search dishes..."
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64" />
+                    </div>
+                    {/* Cart Icon */}
+                    <div className="relative">
+                        <button className="p-2 text-gray-600 hover:text-gray-900 relative">
+                            <ApperIcon name="ShoppingCart" size={24} />
+                        </button>
+                    </div>
+                </div>
             </div>
-            
-            {/* Search and Cart */}
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <ApperIcon 
-                  name="Search" 
-                  size={20} 
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
-                />
-                <input
-                  type="text"
-                  placeholder="Search dishes..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64"
-                />
-              </div>
-              
-{/* Cart Icon */}
-              <div className="relative">
-                <button className="p-2 text-gray-600 hover:text-gray-900 relative">
-                  <ApperIcon name="ShoppingCart" size={24} />
-                </button>
-              </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+        </div></header>
+    {/* Hero Section */}
+    <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Our Menu</h2>
-          <p className="text-xl opacity-90">
-            Discover our carefully curated selection of fine dishes
-          </p>
-          <p className="text-sm mt-2 opacity-80">
-            Click on any dish image to view it in our photo gallery
-          </p>
+            <h2 className="text-4xl font-bold mb-4">Our Menu</h2>
+            <p className="text-xl opacity-90">Discover our carefully curated selection of fine dishes
+                          </p>
+            <p className="text-sm mt-2 opacity-80">Click on any dish image to view it in our photo gallery
+                          </p>
         </div>
-      </div>
-
-      {/* Menu Content */}
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {filteredCategories.length === 0 ? (
-          <div className="text-center py-12">
+    </div>
+    {/* Menu Content */}
+    <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        {filteredCategories.length === 0 ? <div className="text-center py-12">
             <ApperIcon name="Search" size={48} className="mx-auto text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No dishes found</h3>
             <p className="text-gray-600">Try adjusting your search terms</p>
-          </div>
-        ) : (
-          filteredCategories.map((category) => (
-            <MenuCategory
-              key={category.Id}
-              category={category}
-              onDishImageClick={handleDishImageClick}
-            />
-          ))
-        )}
-      </main>
-
-      {/* Photo Lightbox */}
-      <PhotoLightbox
+        </div> : filteredCategories.map(category => <MenuCategory
+            key={category.Id}
+            category={category}
+            onDishImageClick={handleDishImageClick} />)}
+    </main>
+    {/* Photo Lightbox */}
+    <PhotoLightbox
         images={lightboxImages}
         initialIndex={lightboxIndex}
         isOpen={isLightboxOpen}
-        onClose={closeLightbox}
-      />
-    </div>
+        onClose={closeLightbox} />
+</div>
   );
 };
 
