@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import ApperIcon from '@/components/ApperIcon'
-import menuService from '@/services/menuService'
-import MenuCategory from '@/components/organisms/MenuCategory';
-import PhotoLightbox from '@/components/molecules/PhotoLightbox';
-import Loading from '@/components/ui/Loading';
-import Error from '@/components/ui/Error';
+import React, { useEffect, useState } from "react";
+import ApperIcon from "@/components/ApperIcon";
+import MenuCategory from "@/components/organisms/MenuCategory";
+import PhotoLightbox from "@/components/molecules/PhotoLightbox";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import menuService from "@/services/menuService";
 
 const Menu = () => {
   const [categories, setCategories] = useState([]);
@@ -92,7 +92,7 @@ const Menu = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-gray-900">
@@ -100,7 +100,7 @@ const Menu = () => {
               </h1>
             </div>
             
-            {/* Search */}
+            {/* Search and Cart */}
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <ApperIcon 
@@ -116,7 +116,13 @@ const Menu = () => {
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64"
                 />
               </div>
-            </div>
+              
+{/* Cart Icon */}
+              <div className="relative">
+                <button className="p-2 text-gray-600 hover:text-gray-900 relative">
+                  <ApperIcon name="ShoppingCart" size={24} />
+                </button>
+              </div>
           </div>
         </div>
       </header>

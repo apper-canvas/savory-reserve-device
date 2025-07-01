@@ -1,6 +1,26 @@
-import React from 'react';
-import ApperIcon from '@/components/ApperIcon';
-const DishCard = ({ dish, onImageClick }) => {
+import React, { useState } from "react";
+import ApperIcon from "@/components/ApperIcon";
+const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
+const DishCard = ({ dish, onImageClick, onAddToOrder }) => {
+  const [isAdding, setIsAdding] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleAddToOrder = async () => {
+    if (!onAddToOrder || !dish) return;
+    
+    setIsAdding(true);
+    setLoading(true);
+    
+    try {
+      await onAddToOrder(dish);
+    } catch (error) {
+      console.error('Failed to add item to order:', error);
+    } finally {
+      setIsAdding(false);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       {/* Image container */}
@@ -75,8 +95,22 @@ const DishCard = ({ dish, onImageClick }) => {
             View Details
           </button>
           
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
-            Add to Order
+<button 
+            onClick={handleAddToOrder}
+            disabled={isAdding || loading}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors text-sm font-medium flex items-center"
+          >
+            {isAdding ? (
+              <>
+                <ApperIcon name="Loader2" size={16} className="mr-1 animate-spin" />
+                Adding...
+              </>
+            ) : (
+              <>
+                <ApperIcon name="Plus" size={16} className="mr-1" />
+                Add to Order
+              </>
+            )}
           </button>
         </div>
       </div>
