@@ -1,6 +1,5 @@
 import React from 'react';
-import { ApperIcon } from '@/components/ApperIcon';
-
+import ApperIcon from '@/components/ApperIcon';
 const DishCard = ({ dish, onImageClick }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
